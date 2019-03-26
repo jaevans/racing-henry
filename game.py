@@ -34,7 +34,7 @@ class MyGame(arcade.Window):
     """ our custom window class """
 
     def __init__(self):
-        super().__init__(screen_width, screen_height, screen_title)
+        super().__init__(screen_width, screen_height, screen_title,antialiasing=False)
 
         self.car = arcade.Sprite("PNG/Cars/car_green_3.png", scale= 0.4)
 
@@ -74,7 +74,7 @@ class MyGame(arcade.Window):
                 sprite.top = self.get_size()[1] - (row * sprite.height)
                 self.background.append(sprite)
         arcade.set_background_color(arcade.color.RED)
-        self.car.set_position (400,635)
+        self.car.position = (400,635)
         self.car.dir = "down"
 MyGame = MyGame()
 MyGame.setup()
