@@ -39,32 +39,47 @@ class MyGame(arcade.Window):
         self.car = arcade.Sprite("PNG/Cars/car_green_3.png", scale= 0.4)
 
     def on_draw(self):
-
         arcade.start_render()
         self.background.draw()
         self.car.draw()
+
     def on_update(self,deltatime):
         self.car.change_x = 0
         self.car.change_y = 0
         if self.car.dir == "left":
-            self.car.change_x = -100 * deltatime
+            self.car.change_x = -150 * deltatime
             self.car.angle = 90
         if self.car.dir == "right":
-            self.car.change_x = 100 * deltatime
+            self.car.change_x = 150 * deltatime
             self.car.angle = 270
         if self.car.dir == "up":
             self.car.angle = 360
-            self.car.change_y = 100 * deltatime
+            self.car.change_y = 150 * deltatime
         if self.car.dir == "down":
             self.car.angle = 180
-            self.car.change_y = -100 * deltatime
+            self.car.change_y = -150 * deltatime
         self.car.update()
+        squarex = int(self.car.center_x//38) 
+        squarey = int(self.car.center_y//38) 
+        print(squarex,squarey)
+        print(self.map[squarey][squarex])
+
+    def on_key_press(self,symbol,modifiers):
+        if symbol == arcade.key.LEFT:
+            self.car.dir = "left"
+        if symbol == arcade.key.RIGHT:
+            self.car.dir = "right"
+        if symbol == arcade.key.UP:
+            self.car.dir = "up"
+        if symbol == arcade.key.DOWN:
+            self.car.dir = "down"
+
     def setup(self):
         my_map = []
         with open("track.csv") as my_map_file:
             for line in my_map_file.readlines():
                 my_map.append([int(x) for x in line.strip().split(",")])
-
+        self.map = my_map
         self.background = arcade.SpriteList()
 
         for row in range(len(my_map)):
@@ -75,7 +90,7 @@ class MyGame(arcade.Window):
                 self.background.append(sprite)
         arcade.set_background_color(arcade.color.RED)
         self.car.position = (400,635)
-        self.car.dir = "down"
+        self.car.dir = "left"
 MyGame = MyGame()
 MyGame.setup()
 arcade.run()
