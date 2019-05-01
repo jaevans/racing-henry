@@ -37,12 +37,27 @@ class MyGame(arcade.Window):
         super().__init__(screen_width, screen_height, screen_title,antialiasing=False)
 
         self.car = arcade.Sprite("PNG/Cars/car_green_3.png", scale= 0.4)
+        self.number1 = arcade.Sprite("PNG/1.png", scale= 0.5)
+        self.number2 = arcade.Sprite("PNG/2.png", scale= 0.5)
+        self.number3 = arcade.Sprite("PNG/3.png", scale= 0.5)
+        self.number3.center_x = 50
+        self.number3.center_y = 50
+        self.number2.center_x = 50
+        self.number2.center_y = 50
+        self.number1.center_x = 50
+        self.number1.center_y = 50
 
     def on_draw(self):
         arcade.start_render()
         self.background.draw()
         self.car.draw()
-
+        arcade.draw_text("Hello", 100, 100, arcade.color.RED, 20, width=200, align="center")
+        if self.health ==  3:
+            self.number3.draw()
+        if self.health ==  2:
+            self.number2.draw()
+        if self.health ==  1:
+            self.number1.draw()
     def on_update(self,deltatime):
         self.car.change_x = 0
         self.car.change_y = 0
@@ -59,10 +74,13 @@ class MyGame(arcade.Window):
             self.car.angle = 180
             self.car.change_y = -150 * deltatime
         self.car.update()
-        squarex = int(self.car.center_x//38) 
-        squarey = int(self.car.center_y//38) 
+        squarex = int(self.car.center_x/(128 * SPRITE_SCALING)) 
+        squarey = len(self.map[0]) - int(self.car.center_y/(128 * SPRITE_SCALING)) -1
         print(squarex,squarey)
-        print(self.map[squarey][squarex])
+        try:
+            print(self.map[squarey][squarex])
+        except:
+            pass
 
     def on_key_press(self,symbol,modifiers):
         if symbol == arcade.key.LEFT:
@@ -88,9 +106,11 @@ class MyGame(arcade.Window):
                 sprite.left = col * sprite.width
                 sprite.top = self.get_size()[1] - (row * sprite.height)
                 self.background.append(sprite)
-        arcade.set_background_color(arcade.color.RED)
+        arcade.set_background_color(arcade.color.GREEN)
         self.car.position = (400,635)
         self.car.dir = "left"
+        self.health = 3
+        
 MyGame = MyGame()
 MyGame.setup()
 arcade.run()
