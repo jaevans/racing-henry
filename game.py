@@ -58,19 +58,20 @@ class MyGame(arcade.Window):
             self.number2.draw()
         if self.health ==  1:
             self.number1.draw()
-    def on_update(self,deltatime):
+
+    def on_update(self, deltatime):
         self.car.change_x = 0
         self.car.change_y = 0
-        if self.car.dir == "left":
+        if self.car.direction == "left":
             self.car.change_x = -150 * deltatime
             self.car.angle = 90
-        if self.car.dir == "right":
+        if self.car.direction == "right":
             self.car.change_x = 150 * deltatime
             self.car.angle = 270
-        if self.car.dir == "up":
+        if self.car.direction == "up":
             self.car.angle = 360
             self.car.change_y = 150 * deltatime
-        if self.car.dir == "down":
+        if self.car.direction == "down":
             self.car.angle = 180
             self.car.change_y = -150 * deltatime
         self.car.update()
@@ -78,19 +79,26 @@ class MyGame(arcade.Window):
         squarey = len(self.map[0]) - int(self.car.center_y/(128 * SPRITE_SCALING)) -1
         print(squarex,squarey)
         try:
-            print(self.map[squarey][squarex])
+            cords = (self.map[squarey][squarex])
+            if cords == 16:
+                self.health =  self.health -1
+                self.car.direction = "left"
+                self.car.position = (400,635)
+            if  self.health == 0:
+                arcade.close_window()  
+            
         except:
             pass
 
     def on_key_press(self,symbol,modifiers):
         if symbol == arcade.key.LEFT:
-            self.car.dir = "left"
+            self.car.direction = "left"
         if symbol == arcade.key.RIGHT:
-            self.car.dir = "right"
+            self.car.direction = "right"
         if symbol == arcade.key.UP:
-            self.car.dir = "up"
+            self.car.direction = "up"
         if symbol == arcade.key.DOWN:
-            self.car.dir = "down"
+            self.car.direction = "down"
 
     def setup(self):
         my_map = []
@@ -108,8 +116,9 @@ class MyGame(arcade.Window):
                 self.background.append(sprite)
         arcade.set_background_color(arcade.color.GREEN)
         self.car.position = (400,635)
-        self.car.dir = "left"
+        self.car.direction = "left"
         self.health = 3
+
         
 MyGame = MyGame()
 MyGame.setup()
