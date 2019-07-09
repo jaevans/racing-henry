@@ -1,4 +1,5 @@
 import arcade
+import random
 
 screen_width =  768
 screen_height = 768
@@ -36,21 +37,29 @@ class MyGame(arcade.Window):
     def __init__(self):
         super().__init__(screen_width, screen_height, screen_title,antialiasing=False)
 
-        self.car = arcade.Sprite("PNG/Cars/car_green_3.png", scale= 0.4)
+        self.car = arcade.Sprite("PNG/Cars/car_green_3.png", scale= 0.4 ) 
         self.number1 = arcade.Sprite("PNG/1.png", scale= 0.5)
         self.number2 = arcade.Sprite("PNG/2.png", scale= 0.5)
         self.number3 = arcade.Sprite("PNG/3.png", scale= 0.5)
+        #added this as an obstacle. Sorry if it was the wrong place
+        #self.spikes = arcade.Sprite("PNG/Retractable_floor_spikes_icon.png", scale= 0.05)
         self.number3.center_x = 50
         self.number3.center_y = 50
         self.number2.center_x = 50
         self.number2.center_y = 50
         self.number1.center_x = 50
         self.number1.center_y = 50
+        #self.spikes.center_x = 350
+        #self.spikes.center_y = 640
+
+        
 
     def on_draw(self):
         arcade.start_render()
         self.background.draw()
         self.car.draw()
+        # Obstacle drawing
+        #self.spikes.draw()
         arcade.draw_text("Hello", 100, 100, arcade.color.RED, 20, width=200, align="center")
         if self.health ==  3:
             self.number3.draw()
@@ -58,6 +67,7 @@ class MyGame(arcade.Window):
             self.number2.draw()
         if self.health ==  1:
             self.number1.draw()
+        
 
     def on_update(self, deltatime):
         self.car.change_x = 0
@@ -75,9 +85,12 @@ class MyGame(arcade.Window):
             self.car.angle = 180
             self.car.change_y = -150 * deltatime
         self.car.update()
+
         squarex = int(self.car.center_x/(128 * SPRITE_SCALING)) 
         squarey = len(self.map[0]) - int(self.car.center_y/(128 * SPRITE_SCALING)) -1
         print(squarex,squarey)
+        Height_of_map = len(self.map)
+        width_of_map = len(self.map[0])
         try:
             cords = (self.map[squarey][squarex])
             if cords == 16:
@@ -118,6 +131,8 @@ class MyGame(arcade.Window):
         self.car.position = (400,635)
         self.car.direction = "left"
         self.health = 3
+        arcade.Sprite("PNG/3.png", scale= 0.5)
+        
 
         
 MyGame = MyGame()
